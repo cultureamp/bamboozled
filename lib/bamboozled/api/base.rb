@@ -41,7 +41,11 @@ module Bamboozled
                 JSON.parse(response)
               end
             rescue
-              MultiXml.parse(response, symbolize_keys: true)
+              begin
+                MultiXml.parse(response, symbolize_keys: true)
+              rescue
+                response
+              end
             end
           when 400
             raise Bamboozled::BadRequest.new(response, params, 'The request was invalid or could not be understood by the server. Resubmitting the request will likely result in the same error.')
